@@ -13,7 +13,9 @@ services:
       - FLASK_ENV=development
       - DATABASE_URL=postgresql://postgres:password@db:5432/crondb
     depends_on:
-      - db
+      db:
+        condition: service_healthy
+    restart: always
 
   db:
     image: postgres:13
@@ -23,6 +25,11 @@ services:
       - POSTGRES_DB=crondb
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=password
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
 
 volumes:
   postgres_data: 

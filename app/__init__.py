@@ -1,9 +1,10 @@
 from flask import Flask
 from flask_admin import Admin
 from flask_login import LoginManager
-from .models import db, User
+from .models import db, User, CronJob, ErrorLog
 from .views import AdminIndexView, CronJobModelView, ErrorLogModelView
 from .api import api_bp
+from flask_migrate import Migrate
 
 def create_app():
     app = Flask(__name__)
@@ -12,7 +13,12 @@ def create_app():
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
     db.init_app(app)
-    
+    migrate = Migrate(app, db)
+
+    # Veritabanı tablolarını oluştur
+    with app.app_context():
+        db.create_all()
+        
     login_manager = LoginManager()
     login_manager.init_app(app)
     login_manager.login_view = 'auth.login'
