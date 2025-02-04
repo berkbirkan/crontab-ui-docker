@@ -1,14 +1,15 @@
 FROM python:3.9-slim
 
-RUN apt-get update && apt-get install -y cron
-
 WORKDIR /app
 
+# Gereksinim dosyasını kopyala ve paketleri yükle
 COPY requirements.txt .
-RUN pip install -r requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
 
-COPY app/ .
+# Tüm uygulama dosyalarını kopyala
+COPY . .
 
-RUN service cron start
+EXPOSE 5000
 
-CMD ["flask", "run", "--host=0.0.0.0"] 
+# Gunicorn ile uygulamayı başlat (app.py içerisinde app global olarak tanımlı)
+CMD ["gunicorn", "-b", "0.0.0.0:5000", "app:app"] 

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Giriş Yap</title>
+    <!-- Basit Bootstrap CSS ekleyerek görünümü geliştirebilirsiniz -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body class="container">
+    <h2 class="mt-5">Yönetici Girişi</h2>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+         <div class="alert alert-danger">
+         {% for category, message in messages %}
+           <p>{{ message }}</p>
+         {% endfor %}
+         </div>
+      {% endif %}
+    {% endwith %}
+    <form method="post">
+         <div class="form-group">
+             <label for="username">Kullanıcı Adı:</label>
+             <input type="text" class="form-control" name="username" id="username" required>
+         </div>
+         <div class="form-group">
+             <label for="password">Şifre:</label>
+             <input type="password" class="form-control" name="password" id="password" required>
+         </div>
+         <button type="submit" class="btn btn-primary">Giriş Yap</button>
+    </form>
+</body>
+</html> 
