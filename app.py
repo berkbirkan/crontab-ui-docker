@@ -170,7 +170,7 @@ def logout():
     return redirect(url_for('login'))
 
 # Uygulama ilk çalıştığında veritabanı ve scheduler ayarlarının yapılması için
-@app.before_first_request
+@app.before_serving
 def initialize():
     db.create_all()
     # Varsayılan admin kullanıcı oluştur (örn: username: admin, password: admin123)
